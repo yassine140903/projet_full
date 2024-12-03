@@ -69,8 +69,8 @@ const userSchema = new mongoose.Schema(
       coordinates: [Number], // Array of numbers: [longitude, latitude]
       address: String,
     },
-  },
-  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
+  }
+  // this is important { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
 userSchema.pre('save', function (next) {

@@ -16,13 +16,16 @@ export class SharedService {
       queryParams += `search=${encodeURIComponent(filterParams.search)}&`;
     }
     if (filterParams.min) {
-      queryParams += `price[gte]=${filterParams.min}&`;
+      queryParams += `price[gte]=${encodeURIComponent(filterParams.min)}&`;
     }
     if (filterParams.max) {
-      queryParams += `price[lte]=${filterParams.max}&`;
+      queryParams += `price[lte]=${encodeURIComponent(filterParams.max)}&`;
     }
-    if (filterParams.region) {
-      queryParams += `region=${encodeURIComponent(filterParams.region)}&`;
+    if (filterParams.sortOrder) {
+      queryParams += `sort=${encodeURIComponent(filterParams.sortOrder)}&`;
+    }
+    if (filterParams.location) {
+      queryParams += `location=${encodeURIComponent(filterParams.region)}&`;
     }
     if (filterParams.category) {
       queryParams += `category=${encodeURIComponent(filterParams.category)}&`;
@@ -33,7 +36,6 @@ export class SharedService {
     
     queryParams += `page=1&limit=12`;
     // Trim trailing '&' (if any)
-    queryParams = queryParams.slice(0, -1);
   
     // Construct final URL
     const finalUrl = `${baseUrl}?${queryParams}`;

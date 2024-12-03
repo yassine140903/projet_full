@@ -4,6 +4,42 @@ const { promisify } = require('util');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
 
+const multer = require('multer');
+const sharp = require('sharp');
+
+// Multer storage and filter configuration
+const multerStorage = multer.memoryStorage();
+
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Not an image! Please upload only images.'), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+// User image upload and resize
+exports.uploadUserImage = upload.single('image');
+
+exports.resizeUserImage = (req, res, next) => {
+  if (!req.file) return next();
+
+  req.file.filename = `user-${req.user.id}-${Date.now()}-${
+    req.file.originalname
+  }`;
+  sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat('jpeg')
+    .jpeg({ quality: 90 })
+    .toFile(`public/img/users/${req.file.filename}`);
+
+  next();
+};
+
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -40,6 +76,7 @@ exports.signup = async (req, res) => {
       role: req.body.role,
       phoneNumber: req.body.phoneNumber,
       posts: req.body.posts,
+      image: req.file.filename,
     });
 
     createsendToken(newUser, 201, res);

@@ -4,16 +4,16 @@
   </div>
   <div class="below">
     <p style="color: red; font-size: 30px; font-weight: 900">
-      {{ article.price }}
+      {{ article.price + ' DT' }}
     </p>
     <p class="articleName">{{ article.title }}</p>
     <div class="info">
-      <img [src]="" alt="*" />
+      <img [src]="article.createdBy.image" alt="*" />
       <p
         [routerLink]="['profile', article.createdBy]"
         style="color: rgb(92, 89, 89)"
       >
-        {{ article.createdBy }}
+        {{ article.createdBy.username }}
       </p>
     </div>
     <div class="info2">

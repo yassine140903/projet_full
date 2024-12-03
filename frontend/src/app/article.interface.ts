@@ -6,6 +6,6 @@ export interface Article {
   images: string[];
   category: string;
   createdAt: string;
-  createdBy: string;
+  createdBy: {id : string, username : string, image : string};
   location: string;
 }

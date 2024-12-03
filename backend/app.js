@@ -15,18 +15,21 @@ const app = express();
 //security http headers
 app.use(helmet());
 
-//boulila winak ?
 app.use(cors({
   origin: 'http://localhost:4200' // Angular default dev port
 }));
 //
 // hedhi solution mt3 error l images
+const path = require('path');
+
+// Middleware to allow cross-origin resource sharing for static files
 app.use('/public', (req, res, next) => {
   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin'); // Allow cross-origin access
   next();
 });
 
-app.use('/public', express.static('public')); // Serve static files
+// Serve static files from the 'public' directory
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
 // developpement  logging

@@ -49,7 +49,10 @@ exports.getAllPosts = async (req, res) => {
       .sort()
       .limitFields()
       .paginate();
-    const posts = await features.query;
+    const posts = await features.query.populate({
+      path: 'createdBy',
+      select: 'username image', // Select the fields you want to include
+    });
 
     // SEND RESPONSE
     res.status(200).json({

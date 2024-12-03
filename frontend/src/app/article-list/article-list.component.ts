@@ -18,6 +18,17 @@ export class ArticleListComponent {
   i : number = 1;
 
   articles: Article[] = [];
+  vide: Article = {
+    _id: '',
+    title: '',
+    description: '',
+    price: 0,
+    images: [],
+    category: '',
+    createdAt: '',
+    createdBy: {id : '', username : '', image : ''},
+    location: ''
+  };
 
   constructor(
     private sharedService: SharedService,
@@ -28,9 +39,11 @@ export class ArticleListComponent {
     this.sharedService.getSlice(1, 12).subscribe((res: any) => {
       if (res && res.data && res.data.posts) {
         this.articles = res.data.posts;
+        
+        
   
         this.pageIndices = Array(
-          Math.ceil(this.articles.length)
+          Math.ceil(this.articles.length/12)
         )
           .fill(0)
           .map((_, i) => i+1);
@@ -40,6 +53,9 @@ export class ArticleListComponent {
 
         // Trigger Angular's change detection (optional)
         //this.cdr.detectChanges();
+        if (typeof window !== 'undefined') {
+          window.addEventListener('filterParamsUpdated', () => this.fetchFilteredArticles());
+        }
       }
     });
   }
@@ -48,6 +64,8 @@ export class ArticleListComponent {
     this.sharedService.getSlice(num_de_page, 12).subscribe((res: any) => {
       if (res && res.data && res.data.posts) {
         this.articles = res.data.posts;
+        
+
         console.log(this.articles);
       };})
   };
@@ -76,6 +94,12 @@ export class ArticleListComponent {
   // Show the filter
   popUpFilter() {
     this.isFilterVisible = !this.isFilterVisible;
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        if(this.isFilterVisible)
+          this.isFilterVisible = false;
+      }
+    });
   }
 
   closeFilter() {
@@ -102,15 +126,17 @@ export class ArticleListComponent {
     }
   }*/
 
-    /*fetchFilteredArticles() {
+    fetchFilteredArticles() {
       const filterParams = localStorage.getItem('filterParams');
       if (filterParams) {
         const parsedParams = JSON.parse(filterParams);
+        console.log(parsedParams);
     
         // Fetch articles with updated filter parameters
         this.sharedService.getFilteredArticles(parsedParams).subscribe((res: any) => {
           if (res && res.data && res.data.posts) {
             this.articles = res.data.posts;
+            this.closeFilter();
     
             this.pageIndices = Array(
               Math.ceil(this.articles.length / this.indexSliceLength)
@@ -122,6 +148,6 @@ export class ArticleListComponent {
           }
         });
       }
-    }*/
+    }
     
 }

@@ -1,3 +1,4 @@
+
 .container {
     height: 80vh;
     margin-top: 15vh;
@@ -18,7 +19,7 @@
 
 .listArticles {
     display: grid;
-    height: 100%;
+    height: auto;
     grid-template-columns: repeat(auto-fill, minmax(15%, 1fr));
     gap: 0.5vw;
     width: 70%;
@@ -27,6 +28,7 @@
     padding: 0.5vw;
     position: relative;
     overflow: visible;
+    align-items: flex-start;
     transition: 0.2s ease, background-color 0.2s ease;
 }
 
@@ -108,7 +110,7 @@ background-color: #ddd;
     .listArticles {
         grid-template-columns: repeat(auto-fill, minmax(18%, 1fr));
         width: 80%;
-        height: 120%;
+        height: max-content;
     }
     .container{
         margin-bottom: 15vh;
@@ -123,7 +125,7 @@ background-color: #ddd;
     .listArticles {
         grid-template-columns: repeat(auto-fill, minmax(22%, 1fr));
         width: 80%;
-        height: 120%;
+        height: max-content;
     }
     .container{
         margin-bottom: 20vh;
@@ -138,7 +140,7 @@ background-color: #ddd;
     .listArticles {
         grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
         width: 80%;
-        height: 150%;
+        height: max-content;
     }
     .container{
         margin-bottom: 45vh;
@@ -152,7 +154,7 @@ background-color: #ddd;
     .listArticles {
         grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
         width: 85%;
-        height: 300%;
+        height: max-content;
     }
     .container{
         margin-bottom: 165vh;
@@ -166,7 +168,7 @@ background-color: #ddd;
     .listArticles {
         grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
         width: 80%;
-        height: 600%;
+        height: max-content;
     }
     .container{
         margin-bottom: 400vh;

@@ -12,12 +12,12 @@
         </div>
         <select [(ngModel)]="sortOrder" name="sortOrder">
           <option value="" selected>Sort:</option>
-          <option value="asc">prix croissant</option>
-          <option value="desc">prix decroissant</option>
-          <option value="recent">plus recent</option>
-          <option value="old">moins recent</option>
+          <option value="price">prix croissant</option>
+          <option value="-price">prix decroissant</option>
+          <option value="createdAt">plus recent</option>
+          <option value="-createdAt">moins recent</option>
         </select>
-        <select [(ngModel)]="selectedRegion" name="selectedRegion">
+        <select [(ngModel)]="selectedLocation" name="selectedRegion">
           <option value="">All Regions:</option>
           <option *ngFor="let i of region" [value]="i">{{ i }}</option>
         </select>
@@ -25,7 +25,7 @@
           <option value="">All Categories:</option>
           <ng-container *ngFor="let category of categories">
             <optgroup [label]="category.type">
-              <option *ngFor="let item of category.items">{{ item }}</option>
+              <option *ngFor="let item of category.items" [value]="item">{{ item }}</option>
             </optgroup>
           </ng-container>
         </select>

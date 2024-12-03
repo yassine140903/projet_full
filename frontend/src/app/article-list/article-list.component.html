@@ -1,7 +1,7 @@
 <span [class.close]="isFilterVisible" class="humbergerBtn" (click)="popUpFilter()"></span>
-    <div class="filterDiv" [class.visible]="isFilterVisible">
-        <app-filter></app-filter>
-    </div>
+<div class="filterDiv" [class.visible]="isFilterVisible">
+    <app-filter></app-filter>
+</div>
 <div class="container" [class.blurred]="isFilterVisible">
     <div class="listArticles">
         <app-article *ngFor="let article of this.articles" [article]="article" (click)="onArticleClick(article)"></app-article>

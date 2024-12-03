@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { SharedService } from '../../services/shared.service';
+//import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-filter',
@@ -9,20 +9,20 @@ import { SharedService } from '../../services/shared.service';
 })
 export class FilterComponent {
 
-  constructor(private sharedService : SharedService){};
+  constructor(){};
 
-  searchInput?: string;
-  min?: number;
-  max?: number;
+  searchInput= '';
+  min = '';
+  max = '';
   sortOrder = '';
-  selectedRegion = '';
+  selectedLocation = '';
   selectedCategory = '';
   gender = '';
   filterParams = {
     search: this.searchInput,
     min: this.min,
     max: this.max,
-    region: this.selectedRegion,
+    region: this.selectedLocation,
     category: this.selectedCategory,
     gender: this.gender
   };
@@ -57,10 +57,16 @@ export class FilterComponent {
     const minElement = document.getElementById("min") as HTMLInputElement;
     const maxElement = document.getElementById("max") as HTMLInputElement;
     
-    if ((this.min === undefined && this.max === undefined) ||
-    (this.min && this.max && Number(this.min) <= Number(this.max)))
+    if ((this.min === null && this.max === null) ||
+    (this.min && this.max && Number(this.min) <= Number(this.max))){
+      minElement?.style.setProperty("border", "0.1px solid #000");
+      minElement?.style.setProperty("color", "#000");
+      maxElement?.style.setProperty("border", "0.1px solid #000");
+      maxElement?.style.setProperty("color", "#000");
       return true;
-    if (this.min && isNaN(this.min)) {
+    }
+      
+    if (this.min && isNaN(Number(this.min))) {
       minElement?.style.setProperty("border", "2px dashed red");
       minElement?.style.setProperty("color", "red");
       return false;
@@ -68,7 +74,7 @@ export class FilterComponent {
       minElement?.style.setProperty("border", "0.1px solid #000");
       minElement?.style.setProperty("color", "#000");
 
-      if (this.max && isNaN(this.max)) {
+      if (this.max && isNaN(Number(this.max))) {
         maxElement?.style.setProperty("border", "2px dashed red");
         maxElement?.style.setProperty("color", "red");
         return false;
@@ -86,6 +92,14 @@ export class FilterComponent {
       const filterParams: any = {};
     
       // Only add non-null/undefined values to the filterParams
+      if (this.min) {
+        filterParams.min = this.min;
+      }
+
+      if (this.max) {
+        filterParams.max = this.max;
+      }
+
       if (this.searchInput) {
         filterParams.search = this.searchInput;
       }
@@ -94,8 +108,8 @@ export class FilterComponent {
         filterParams.sortOrder = this.sortOrder;
       }
 
-      if (this.selectedRegion) {
-        filterParams.region = this.selectedRegion;
+      if (this.selectedLocation) {
+        filterParams.location = this.selectedLocation;
       }
     
       if (this.selectedCategory) {
@@ -108,14 +122,13 @@ export class FilterComponent {
     
       // Now we have the filterParams object ready with only the valid attributes.
       if(this.verifInput()){
-        filterParams.min = this.min;
-        filterParams.max = this.max;
         //HERE USE LOCAL_STORAGE BRO:
-        /*localStorage.setItem('filterParams', JSON.stringify(filterParams));
+        localStorage.setItem('filterParams', JSON.stringify(filterParams));
+        console.log(filterParams);
 
         // Optionally, notify other components about the filter change
         window.dispatchEvent(new Event('filterParamsUpdated'));
-        console.log("mnadham b3athtlak");*/
+        console.log("mnadham b3athtlak");
       }
   }
 

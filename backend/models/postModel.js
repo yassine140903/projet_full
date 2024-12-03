@@ -1,17 +1,22 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, "Please provide a title"],
+    required: [true, 'Please provide a title'],
   },
   description: {
     type: String,
-    required: [true, "Please provide a description"],
+    required: [true, 'Please provide a description'],
   },
   price: {
     type: Number,
-    required: [true, "Please provide a price"],
+    required: [true, 'Please provide a price'],
+  },
+  gender: {
+    type: String,
+    required: [true, 'Please provide a gender'],
+    enum: ['man', 'woman'],
   },
   images: [
     {
@@ -27,12 +32,12 @@ const postSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: [true, "Please provide the user who created this post"],
+    ref: 'User',
+    required: [true, 'Please provide the user who created this post'],
   },
   location: {
     type: String,
   }, // optional field for location-based filtering
 });
-const Post = mongoose.model("Post", postSchema);
+const Post = mongoose.model('Post', postSchema);
 module.exports = Post;
