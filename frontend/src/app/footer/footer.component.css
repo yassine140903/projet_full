@@ -1,0 +1,93 @@
+.container{
+    height: 15vh;
+    background-color: black;
+    color: #fff;
+}
+
+.social{
+    height: 50%;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.social ul{
+    height: 100%;
+    width: 15%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.social ul li{
+    height: 100%;
+    width: 22%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    color: #fff;
+    padding: 0.5vw 0;
+}
+
+.social ul li img{
+    height: 100%;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.facebook:hover{
+    background-color: #1877f2;
+}
+
+.instagram:hover{  /* Instagram */
+    background: linear-gradient(45deg, #f3f3f3, #f58529, #dd2a7b, #8134af, #515bd4);
+}
+
+.whatsapp:hover{  /* WhatsApp */
+    background-color: #25D366; /* WhatsApp Green */
+}
+
+.twitter:hover{  /* Twitter */
+    background-color: #1da1f2; /* Twitter Blue */
+}
+
+.social ul li img:nth-of-type(4){  /* Twitter */
+    padding-top: 1.5vh;
+}
+
+p{
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media all and (max-width: 1500px){
+    .social ul{
+        width: 20%;
+    }
+}
+
+@media all and (max-width: 1200px){
+    .social ul{
+        width: 30%;
+    }
+}
+
+@media all and (max-width: 920px){
+    .social ul{
+        width: 40%;
+    }
+}
+@media all and (max-width: 650px){
+    .social ul{
+        width: 65%;
+    }
+}
+@media all and (max-width: 420px){
+    .social ul{
+        width: 70%;
+    }
+}

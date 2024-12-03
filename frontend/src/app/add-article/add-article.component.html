@@ -1,0 +1,44 @@
+
+<app-nav-bar></app-nav-bar>
+<div class="container">
+    <h1>Create post</h1>
+    <div class="form" action="" method="post">
+            <div class="upperrow">
+                Title :
+                <input type="text" id="title" [(ngModel)]="this.title">
+            </div>
+            <div class="mid">
+                <div>
+                    Price:
+                    <input type="text" id="price" [(ngModel)]="this.price">
+                </div>
+            
+                <select id="select">
+                    <option value="0">All Categories :</option>
+                    <ng-container *ngFor="let category of categories">
+                        <optgroup [label]="category.type">
+                        <option *ngFor="let item of category.items">{{ item }}</option>
+                        </optgroup>
+                    </ng-container>
+                </select>
+            </div>
+        
+            <div class="checkbox">
+                <b>Gender:</b>
+                <input type="radio" name="gender" id="man">man
+                <input type="radio" name="gender" id="woman">woman
+            </div>
+            <div class="ptextarea">
+                <p>Descrition:</p>
+                <textarea id="description" [(ngModel)]="this.description" placeholder="(optional)"></textarea>
+            </div>
+            <div class="photo">
+                Photos:
+                <input type="file" (change)="onFileSelect($event)" multiple accept="image/*" id="images" [(ngModel)]="this.photos">
+            </div>
+            <div class="btn">
+                <button type="button" id="submit" (click)="verifInput()">Post</button>
+                <button (click)="reset()">Reset</button>
+            </div>
+        </div>
+</div>

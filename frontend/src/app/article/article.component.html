@@ -1,0 +1,24 @@
+<div class="container" *ngIf="article">
+  <div class="img-container">
+    <img [src]="'http://localhost:3000/public/img/posts/' + article.images[0]" alt="*" />
+  </div>
+  <div class="below">
+    <p style="color: red; font-size: 30px; font-weight: 900">
+      {{ article.price }}
+    </p>
+    <p class="articleName">{{ article.title }}</p>
+    <div class="info">
+      <img [src]="" alt="*" />
+      <p
+        [routerLink]="['profile', article.createdBy]"
+        style="color: rgb(92, 89, 89)"
+      >
+        {{ article.createdBy }}
+      </p>
+    </div>
+    <div class="info2">
+      <img src="assets/images/location.png" alt="*" />
+      <p style="color: rgb(92, 89, 89)">{{ article.location }}</p>
+    </div>
+  </div>
+</div>

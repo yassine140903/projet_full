@@ -1,0 +1,28 @@
+<!--app-nav-bar></app-nav-bar-->
+<div class="container">
+  <div class="product-gallery">
+    <img [src]="mainImage" alt="Main Product Image" class="main-image" />
+    <div class="thumbnail-gallery">
+      <img *ngFor="let image of article?.images" [src]="" alt="Thumbnail" />
+    </div>
+    <button (click)="previousImage()" class="nav-button prev-button">
+      &#60;
+    </button>
+    <!-- Left arrow -->
+    <button (click)="nextImage()" class="nav-button next-button">&#62;</button>
+    <!-- Right arrow -->
+  </div>
+
+  <div class="product-details">
+    <h2>{{ article?.title }}</h2>
+    <p class="price">{{ article?.price | currency }}</p>
+
+    <button type="button" (click)="BuyNow()" class="add-to-cart-btn">
+      Buy Now
+    </button>
+    <div class="product-description">
+      <h3>Product Description</h3>
+      <p>{{ article?.description }}</p>
+    </div>
+  </div>
+</div>

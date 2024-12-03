@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="leftside">
+    <div class="logo">
+      <img src="assets/images/logo_0.jpg" alt="logo" />
+    </div>
+    <ul>
+      <li routerLink=""><img src="assets/images/home.png" /></li>
+      <li routerLink="/contact"><img src="assets/images/contact.png" /></li>
+      <li routerLink="/about"><img src="assets/images/about.png" /></li>
+    </ul>
+  </div>
+  <div class="title">
+    <h1>Dabshy</h1>
+  </div>
+  <div class="rightside">
+    <ng-container>
+      <button
+        type="button"
+        class="addarticle"
+        *ngIf="this.router.url != '/addArticle'"
+        (click)="goToAddArticle()"
+      >
+        +
+      </button>
+    </ng-container>
+    <button
+      type="button"
+      class="loginBtn"
+      *ngIf="!authService._isLoggedIn"
+      (click)="goToLogin()"
+    ></button>
+
+    <img
+      class="profile"
+      [src]="user.image"
+      alt="profile pic"
+      *ngIf="authService._isLoggedIn"
+      (click)="onProfileClick(user)"
+    />
+    <span
+      class="username"
+      *ngIf="authService._isLoggedIn"
+      (click)="onProfileClick(user)"
+    >
+      {{ user.username }}
+    </span>
+    <button
+      type="button"
+      class="logoutBtn"
+      *ngIf="authService._isLoggedIn"
+      (click)="this.authService.isLoggedIn = false"
+    ></button>
+  </div>
+</div>

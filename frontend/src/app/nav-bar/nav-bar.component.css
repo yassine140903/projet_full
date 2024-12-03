@@ -1,0 +1,225 @@
+
+.container{
+    height: 8vh;
+    width: 100vw;
+    background-color: #fff;
+    position: fixed;
+    z-index: 5;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+.leftside{
+    
+    height: 60%;
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: visible;
+}
+
+ul{
+    height: 110%;
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(119, 119, 119, 0.1);
+    border-radius: 20px;
+    overflow: visible;
+}
+
+ul li{
+    height: 5vh;
+    width: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed black;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.rightside {
+    height: 100%;
+    width: 30vw;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 1vw;
+    position: relative;
+}
+
+.addarticle {
+    position: fixed;
+    top: 1.75%;
+    right: 20%;
+    
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f0f0f0;
+    border: 1px dashed #000;
+    background:  #06c79a;
+}
+
+.loginBtn, .logoutBtn, .addarticle{
+    border-radius: 50%;
+    height: 4.5vh;
+    width: 4.5vh;
+    cursor: pointer;
+}
+
+.loginBtn, .logoutBtn {
+    position: fixed;
+    top: 1.75%;
+    right: 5%;
+    background-size: contain;
+    border: 0.1px dashed black;
+}
+
+.loginBtn{
+    background: url("../../assets/images/login.png") no-repeat center;
+    background-size: contain;
+    background-color: #d35400;
+}
+
+.logoutBtn{
+    background: url("../../assets/images/logout.png") no-repeat center;
+    background-size: contain;
+    background-color: #727272;
+}
+
+
+.loginBtn:hover, .logoutBtn:hover{
+    background-color: #e67e22;
+}
+
+.addarticle:hover{
+    background-color: #0f0;
+}
+
+.profile {
+    position: fixed;
+    top: 1.75%;
+    right: 10%;
+    width: 4.5vh;
+    height: 4.5vh;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 1px dashed black;
+}
+
+.username{
+    color: #000;
+    position: fixed;
+    top: 6%;
+    right: 9.9%;
+    font-size: 14px;
+}
+
+.profile img{
+    width: 2.2vw;
+    height: 2vw;
+    border-radius: 50%;
+    border: 1px solid #000;
+}
+
+.logo{
+    width: 20%;
+    height: 200%;
+    position: relative;
+}
+
+.logo img{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 5;
+}
+
+@media all and (max-width: 1350px){
+    
+    .leftside{
+        height: 50%;
+        width: 30%;
+    }
+
+    .leftside ul{
+        width: 70%;
+    }
+    
+    .rightside {
+        height: 60%;
+        width: 30vw;
+        overflow: visible;
+    }
+
+    .loginBtn{
+        background: url("../../assets/images/login.png") no-repeat center;
+        background-size: contain;
+        background-color: #d35400;
+    }
+    
+    .logoutBtn{
+        background: url("../../assets/images/logout.png") no-repeat center;
+        background-size: contain;
+        background-color: #727272;
+    }
+    
+    .logo{
+        display: none;
+    }
+}
+
+
+@media all and (max-width: 1200px){
+    .leftside ul{
+        width: 80%;
+    }
+}
+
+@media all and (max-width: 920px){
+    .loginBtn, .logoutBtn{
+        right: 3%;
+    }
+    .leftside ul{
+        width: 95%;
+    }
+}
+@media all and (max-width: 650px){
+    .loginBtn, .logoutBtn{
+        right: 0%;
+    }
+    .leftside ul{
+        width: 100%;
+    }
+}
+@media all and (max-width: 480px){
+    .profile, .addarticle, .loginBtn, .logoutBtn{
+        height: 3.5vh;
+        width: 3.5vh;
+        top: 2.25%;
+    }
+    .username{
+        top: 5.75%;
+        font-size: 12px;
+    }
+    .leftside{
+        width: 30%;
+    }
+    .leftside ul{
+        width: 90%;
+    }
+    .leftside ul li{
+        height: 3.5vh;
+        width: 3.5vh;
+    }
+}
