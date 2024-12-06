@@ -2,7 +2,6 @@ const cors = require('cors');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
-
 const postRouter = require('./routes/postRoutes');
 const userRouter = require('./routes/userRoutes');
 const helmet = require('helmet');
@@ -12,50 +11,52 @@ const hpp = require('hpp');
 const app = express();
 
 // 1) MIDDLEWARES
-//security http headers
+// Security HTTP headers
 app.use(helmet());
 
+// Enable CORS
 app.use(cors({
-  origin: 'http://localhost:4200' // Angular default dev port
+  origin: 'http://localhost:4200'
 }));
-//
-// hedhi solution mt3 error l images
-const path = require('path');
 
 // Middleware to allow cross-origin resource sharing for static files
-app.use('/public', (req, res, next) => {
+app.use('/public/img/posts', (req, res, next) => {
   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin'); // Allow cross-origin access
   next();
 });
 
 // Serve static files from the 'public' directory
-app.use('/public', express.static(path.join(__dirname, 'public')));
+const path = require('path');
+app.use('/public', express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res, path) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');  // Allow all origins for static files
+  }
+}));
 
 
-// developpement  logging
+// Development logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
-// limit request from same api
+
+// Rate limiting: Limit requests to API
 const limiter = rateLimit({
   max: 100,
   windowMs: 5 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an 5 min!',
+  message: 'Too many requests from this IP, please try again in 5 minutes!',
 });
 app.use('/api', limiter);
 
-// body parser, reading data from body into req.body
+// Body parser middleware
 app.use(express.json());
 
-// serving static files
-// app.use(express.static(`/public`));
-
-// data sanitization against nosql query injection
+// Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
-// data sanitization against xss attacks (cross site scripting) fot html injections
+
+// Data sanitization against XSS attacks (cross-site scripting) for HTML injections
 app.use(xss());
 
-// prevent parameter pollution
+// Prevent parameter pollution
 app.use(
   hpp({
     whitelist: [
@@ -69,6 +70,7 @@ app.use(
   })
 );
 
+// Example middleware logging
 app.use((req, res, next) => {
   console.log('Hello from the middleware 👋');
   next();

@@ -10,22 +10,30 @@ import { User } from '../user.interface';
 })
 export class NavBarComponent {  
   constructor(public router: Router, public authService: AuthService) {}
-
-
-  user : User = {
-    _id : "67446dafbfd0dbdd63e5b567",
-    username : 'mhbxii',
-    email : 'mhbxii@gmail.com',
-    image : "assets/images/profilepic.png",
-    phoneNumber : "+21624644429",
-    location : "Kebili",
-    posts : [],
-    role : 'user',
-    createdAt : "haha",
-    updatedAt: "hhhh",
-    isLoggedIn : false,
-  };
   
+    user: User = {
+      _id: "default",
+      username: "Guest",
+      email: "",
+      image: "assets/images/profile.png",
+      phoneNumber: "",
+      location: "",
+      posts: [],
+      role: "guest",
+      createdAt: "",
+      updatedAt: "",
+      isLoggedIn: false,
+    };
+  
+    ngOnInit() {
+      const userData = localStorage.getItem("userData");
+      try {
+        this.user = userData ? (JSON.parse(userData) as User) : this.user;
+      } catch (error) {
+        console.error("Failed to parse userData from localStorage:", error);
+      }
+    }
+
 
   onProfileClick(user: User) {
     this.router.navigate(['/profile', user._id]);

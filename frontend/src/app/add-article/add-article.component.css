@@ -8,7 +8,11 @@
     justify-content: flex-start;
     align-items: center;
     gap: 1vw;
-    background-color: antiquewhite;
+    background-color: rgb(255, 255, 255);
+}
+
+input[type=text]{
+    border-radius: 3px;
 }
 
 .form {
@@ -18,7 +22,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 4vh 1em;
+    padding: 4vh 1vw;
     border-radius: 10px;
     color: #fff;
     row-gap: 1vh;
@@ -27,10 +31,19 @@
 .upperrow, .mid{
     padding: 1vh 0;
     height: 6vh;
-    width: 60%;
+    width: 80%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.mid{
+    height: 10vh;
+    width: 100%;
+    flex-direction: row;
+    gap: 1vw;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .upperrow input{
@@ -45,30 +58,32 @@
 }
 
 .mid input{
-    height: 100%;
-    width: 5vw;
+    height: 78%;
+    width: 15vw;
 }
 
 select, option{
-    height: 4vh;
-    width: 60%;
+    height: 5vh;
+    width: 35%;
     text-align: center;
     background-color: antiquewhite;
     border: 0.5px solid black;
+    border-radius: 3px;
 }
 
 .checkbox{
     display: flex;
     column-gap: 0.2vw;
     justify-content: space-evenly;
-    width: 30%;
+    width: 50%;
     padding: 1vh 0;
 }
 
 .ptextarea{
     display: flex;
     flex-direction: column;
-    width: 60%;
+    height: 10vh;
+    width: 70%;
     align-items: space-between;
     padding: 0 0 1vh 0;
 }
@@ -77,6 +92,10 @@ select, option{
     min-height: 70%;
     width: 100%;
     resize: vertical;
+}
+
+.ptextarea textarea:focus{
+    outline: 0;
 }
 
 .btn{
@@ -93,7 +112,67 @@ select, option{
 .photo{
     height: 6vh;
     width: 60%;
-    background: aquamarine;
+    background: rgba(223, 249, 231, 0.357);
     display: flex;
     align-items: center;
+    border-radius: 3px;
+}
+
+.errmsg{
+    position: fixed;
+    top: 15vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 5vh;
+    width: 30vw;
+    background-color: #fecdd1; /* Light pinkish-red */
+    color: #721c24; /* Deep red text */
+
+    line-height: 5vh; /* For vertical centering of text */
+    border-radius: 5px; /* Optional: For rounded edges */
+    padding: 0 1vw;
+
+}
+
+@media all and (max-width: 1500px){
+    .form{
+        width: 45%;
+    }
+    .checkbox input[type=radio]{
+        transform: scale(1.2);
+    }
+}
+
+@media all and (max-width: 1200px){
+    .form{
+        width: 55%;
+    }
+    .checkbox input[type=radio]{
+        transform: scale(1.35);
+    }
+}
+
+@media all and (max-width: 920px){
+    .form{
+        width: 65%;
+    }
+    .checkbox input[type=radio]{
+        transform: scale(1.5);
+    }
+}
+@media all and (max-width: 650px){
+    .form{
+        width: 75%;
+    }
+    .checkbox input[type=radio]{
+        transform: scale(1.75);
+    }
+}
+@media all and (max-width: 480px){
+    .form{
+        width: 85%;
+    }
+    .checkbox input[type=radio]{
+        transform: scale(2);
+    }
 }

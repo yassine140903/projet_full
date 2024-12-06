@@ -1,9 +1,9 @@
-<!--app-nav-bar></app-nav-bar-->
+<app-nav-bar></app-nav-bar>
 <div class="container">
   <div class="product-gallery">
-    <img [src]="mainImage" alt="Main Product Image" class="main-image" />
+    <img [src]="'http://localhost:3000/public/img/posts/' + mainImage" alt="Main Product Image" class="main-image" />
     <div class="thumbnail-gallery">
-      <img *ngFor="let image of article?.images" [src]="" alt="Thumbnail" />
+      <img *ngFor="let image of article?.images" (click)="setMainImage(image)" [src]="'http://localhost:3000/public/img/posts/' + image" alt="Thumbnail" />
     </div>
     <button (click)="previousImage()" class="nav-button prev-button">
       &#60;
@@ -20,6 +20,10 @@
     <button type="button" (click)="BuyNow()" class="add-to-cart-btn">
       Buy Now
     </button>
+    <div class="phoneNumber">
+      <h3>Phone Number :</h3>
+      <p>{{ article?.createdBy?.phoneNumber }}</p>
+    </div>
     <div class="product-description">
       <h3>Product Description</h3>
       <p>{{ article?.description }}</p>

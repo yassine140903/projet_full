@@ -20,12 +20,14 @@ export class ProfileComponent {
         // Use shared service to fetch article from API
         this.sharedService.getUser(userId).subscribe((res : any) => {
           this.user = res.data.user;
+          console.log(this.user.image);
         });
       }
   }
 
   logMeOut(){
-    this.auth.isLoggedIn = false;
+    //LOG OUT ... this.auth._isLoggedIn = false;
+    this.auth._isLoggedIn = false;
     this.router.navigate(["/"]);
   }
 

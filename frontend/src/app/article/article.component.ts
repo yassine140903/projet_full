@@ -7,5 +7,15 @@ import { Article } from '../article.interface';
   styleUrl: './article.component.css'
 })
 export class ArticleComponent {
-  @Input() article : Article | null = null;
+  @Input() article : Article = {
+    _id: "",
+    title: "",
+    description: "",
+    price: 0,
+    images: [],
+    category: "",
+    createdAt: "",
+    createdBy: {_id : "", username : "", image : "", phoneNumber: ""},
+    location: "",
+  }
 }

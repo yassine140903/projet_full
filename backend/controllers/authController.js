@@ -4,6 +4,8 @@ const { promisify } = require('util');
 const sendEmail = require('../utils/email');
 const crypto = require('crypto');
 
+const { handleMongoError } = require('../utils/errorHandler'); // Import the utility function
+
 const multer = require('multer');
 const sharp = require('sharp');
 
@@ -27,15 +29,13 @@ exports.uploadUserImage = upload.single('image');
 
 exports.resizeUserImage = (req, res, next) => {
   if (!req.file) return next();
-
-  req.file.filename = `user-${req.user.id}-${Date.now()}-${
-    req.file.originalname
-  }`;
+  console.log('req.file exists');
+  req.file.filename = `user--${Date.now()}-${req.file.originalname}`;
   sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`public/img/users/${req.file.filename}`);
+    .toFile(`../frontend/src/assets/images/users/${req.file.filename}`);
 
   next();
 };
@@ -73,17 +73,15 @@ exports.signup = async (req, res) => {
       email: req.body.email,
       password: req.body.password,
       passwordConfirm: req.body.passwordConfirm,
-      role: req.body.role,
       phoneNumber: req.body.phoneNumber,
-      posts: req.body.posts,
-      image: req.file.filename,
     });
 
     createsendToken(newUser, 201, res);
   } catch (err) {
+    const message = handleMongoError(err); // Format the error message
     res.status(404).json({
       status: 'fail',
-      message: err,
+      message,
     });
   }
 };
@@ -108,9 +106,10 @@ exports.login = async (req, res) => {
 
     createsendToken(user, 200, res);
   } catch (err) {
+    const message = handleMongoError(err); // Format the error message
     res.status(404).json({
       status: 'fail',
-      message: err,
+      message,
     });
   }
 };
@@ -120,17 +119,17 @@ exports.protect = async (req, res, next) => {
     // 1) Getting token and check if it's there
     let token;
     console.log('protect', req.headers);
-    // if (
-    //   req.headers.authorization &&
-    //   req.headers.authorization.startsWith("Bearer")
-    // ) {
-    //   token = req.headers.authorization.split(" ")[1];
-    // }
-    const jwtRegex = new RegExp(/jwt=.*$/i);
-    const JWTCookie = jwtRegex.test(req.headers.cookie)
-      ? req.headers.cookie.match(/jwt=.*$/i)[0].split('=')[1]
-      : null;
-    token = JWTCookie;
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith('Bearer')
+    ) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+    // const jwtRegex = new RegExp(/jwt=.*$/i);
+    // const JWTCookie = jwtRegex.test(req.headers.cookie)
+    //   ? req.headers.cookie.match(/jwt=.*$/i)[0].split('=')[1]
+    //   : null;
+    // token = JWTCookie;
     console.log('hey token', token);
     if (!token) {
       return res.status(401).json({

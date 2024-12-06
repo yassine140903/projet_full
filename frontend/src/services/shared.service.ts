@@ -1,11 +1,14 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SharedService {
-  constructor(private http: HttpClient) {}
+  constructor( private http: HttpClient) {}
 
   getFilteredArticles(filterParams: any) {
     const baseUrl = 'http://localhost:3000/api/v1/posts';
@@ -35,10 +38,9 @@ export class SharedService {
     }
     
     queryParams += `page=1&limit=12`;
-    // Trim trailing '&' (if any)
-  
-    // Construct final URL
+    
     const finalUrl = `${baseUrl}?${queryParams}`;
+    console.log(finalUrl);
     return this.http.get(finalUrl);
   }  
   
@@ -59,10 +61,24 @@ export class SharedService {
     return this.http.get(`http://localhost:3000/api/v1/posts/${id}`);
   }  
 
-  // data is the article data to be posted
-  postArticle(data: any) {
-    return this.http.post('http://localhost:3000/api/v1/posts', data);
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
+  // data is the article data to be posted
+  postArticle(data: any): Observable<any> {
+    const token = this.getToken();
+    
+    // Set up headers (Content-Type is not needed for FormData)
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+  
+    // Send FormData to the backend
+    return this.http.post('http://localhost:3000/api/v1/posts', data, { headers });
+  }
+  
+
   updateArticle(id: string, data: any) {
     return this.http.put(`http://localhost:3000/api/v1/posts/${id}`, data);
   }
@@ -81,7 +97,7 @@ export class SharedService {
     return this.http.post('http://localhost:3000/api/v1/users/signup', data);
   }
   signinuser(data: any) {
-    return this.http.post('http://localhost:3000/api/v1/users/signin', data);
+    return this.http.post('http://localhost:3000/api/v1/users/login', data);
   }
   signoutuser() {
     return this.http.get('http://localhost:3000/api/v1/users/signout');
@@ -91,6 +107,10 @@ export class SharedService {
   }
   deleteme() {
     return this.http.delete('http://localhost:3000/api/v1/users/deleteme');
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`http://localhost:3000/api/v1/forgotPassword`, { email });
   }
 
 }

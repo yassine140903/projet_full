@@ -18,17 +18,6 @@ export class ArticleListComponent {
   i : number = 1;
 
   articles: Article[] = [];
-  vide: Article = {
-    _id: '',
-    title: '',
-    description: '',
-    price: 0,
-    images: [],
-    category: '',
-    createdAt: '',
-    createdBy: {id : '', username : '', image : ''},
-    location: ''
-  };
 
   constructor(
     private sharedService: SharedService,
@@ -40,22 +29,15 @@ export class ArticleListComponent {
       if (res && res.data && res.data.posts) {
         this.articles = res.data.posts;
         
-        
-  
         this.pageIndices = Array(
-          Math.ceil(this.articles.length/12)
+          res.totalPages
         )
           .fill(0)
           .map((_, i) => i+1);
   
         //this.articleSlice();
         this.indexSlice();
-
-        // Trigger Angular's change detection (optional)
-        //this.cdr.detectChanges();
-        if (typeof window !== 'undefined') {
-          window.addEventListener('filterParamsUpdated', () => this.fetchFilteredArticles());
-        }
+        window.addEventListener('filterParamsUpdated', () => this.fetchFilteredArticles());
       }
     });
   }
@@ -64,9 +46,6 @@ export class ArticleListComponent {
     this.sharedService.getSlice(num_de_page, 12).subscribe((res: any) => {
       if (res && res.data && res.data.posts) {
         this.articles = res.data.posts;
-        
-
-        console.log(this.articles);
       };})
   };
 
@@ -130,23 +109,28 @@ export class ArticleListComponent {
       const filterParams = localStorage.getItem('filterParams');
       if (filterParams) {
         const parsedParams = JSON.parse(filterParams);
-        console.log(parsedParams);
-    
+
         // Fetch articles with updated filter parameters
-        this.sharedService.getFilteredArticles(parsedParams).subscribe((res: any) => {
-          if (res && res.data && res.data.posts) {
-            this.articles = res.data.posts;
-            this.closeFilter();
-    
-            this.pageIndices = Array(
-              Math.ceil(this.articles.length / this.indexSliceLength)
-            )
-              .fill(0)
-              .map((_, i) => i + 1);
-    
-            this.indexSlice();
-          }
-        });
+        this.sharedService.getFilteredArticles(parsedParams).subscribe({
+     
+            next: (res: any) => {
+              if (res && res.data && res.data.posts) {
+                this.articles = res.data.posts;
+                this.closeFilter();
+        
+                this.pageIndices = Array(
+                  res.totalPages
+                )
+                  .fill(0)
+                  .map((_, i) => i + 1);
+        
+                this.indexSlice();
+              }
+            },
+            error: (err) => {
+              console.log("hedha error ml filter storage", err);
+            }
+       });
       }
     }
     

@@ -1,4 +1,5 @@
-const User = require("../models/userModel");
+const User = require('../models/userModel');
+const { handleMongoError } = require('../utils/errorHandler'); // Import the utility function
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -14,7 +15,7 @@ exports.getAllUsers = async (req, res) => {
 
     // SEND RESPONSE
     res.status(200).json({
-      status: "success",
+      status: 'success',
       results: users.length,
       data: {
         users,
@@ -22,7 +23,7 @@ exports.getAllUsers = async (req, res) => {
     });
   } catch (err) {
     res.status(404).json({
-      status: "fail",
+      status: 'fail',
       message: err.message,
     });
   }
@@ -33,33 +34,34 @@ exports.updateMe = async (req, res) => {
     // 1) Create error if user POSTs password data
     if (req.body.password || req.body.passwordConfirm) {
       return res.status(400).json({
-        status: "fail",
+        status: 'fail',
         message:
-          "This route is not for password updates. Please use /updateMyPassword.",
+          'This route is not for password updates. Please use /updateMyPassword.',
       });
     }
 
     // 2) Filtered out unwanted fields names that are not allowed to be updated
-    const filteredBody = filterObj(req.body, "username", "email");
+    const filteredBody = filterObj(req.body, 'username', 'email');
     if (req.file) filteredBody.profilePicture = req.file.filename;
 
     // 3) Update user document
     const updatedUser = await User.findById(req.user.id);
-    updatedUser.username = filteredBody.username;
-    updatedUser.email = filteredBody.email;
+    if (filteredBody.username) updatedUser.username = filteredBody.username;
+    if (filteredBody.email) updatedUser.email = filteredBody.email;
     await updatedUser.save({ validateModifiedOnly: true });
     // SEND RESPONSE
     res.status(200).json({
-      status: "success",
+      status: 'success',
       data: {
         user: updatedUser,
       },
     });
-    console.log("User updated successfully");
+    console.log('User updated successfully');
   } catch (err) {
+    const message = handleMongoError(err);
     res.status(404).json({
-      status: "fail",
-      message: err.message,
+      status: 'fail',
+      message,
     });
   }
 };
@@ -69,12 +71,12 @@ exports.deleteMe = async (req, res) => {
     await User.findByIdAndUpdate(req.user.id, { active: false }); // soft delete
     // SEND RESPONSE
     res.status(204).json({
-      status: "success",
+      status: 'success',
       data: null,
     });
   } catch (err) {
     res.status(404).json({
-      status: "fail",
+      status: 'fail',
       message: err.message,
     });
   }
@@ -83,39 +85,39 @@ exports.deleteMe = async (req, res) => {
 exports.getUser = async (req, res) => {
   try {
     console.log(req.params.id);
-    const user = await User.findById(req.params.id).populate("posts");
+    const user = await User.findById(req.params.id).populate('posts');
     console.log(user.posts);
 
     // SEND RESPONSE
     res.status(200).json({
-      status: "success",
+      status: 'success',
       data: {
         user,
       },
     });
   } catch (err) {
     res.status(404).json({
-      status: "fail",
+      status: 'fail',
       message: err.message,
-      error: "erore",
+      error: 'erore',
     });
   }
 };
 exports.createUser = (req, res) => {
   res.status(500).json({
-    status: "error",
-    message: "This route is not yet defined!",
+    status: 'error',
+    message: 'This route is not yet defined!',
   });
 };
 exports.updateUser = (req, res) => {
   res.status(500).json({
-    status: "error",
-    message: "This route is not yet defined!",
+    status: 'error',
+    message: 'This route is not yet defined!',
   });
 };
 exports.deleteUser = (req, res) => {
   res.status(500).json({
-    status: "error",
-    message: "This route is not yet defined!",
+    status: 'error',
+    message: 'This route is not yet defined!',
   });
 };

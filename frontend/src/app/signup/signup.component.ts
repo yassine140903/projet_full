@@ -1,87 +1,93 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })
+
+
 export class SignupComponent {
-  constructor(private router: Router){}
-  verifInput(){
+
+  credentials = {
+    username: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    phoneNumber: '',
+    location: '',
+  };
+
+  constructor(private http: HttpClient, private router: Router , private authService: AuthService){}
+  
+  verifInput(): boolean {
     let ok = true;
-    const NameRegex = /^[a-zA-Z ]+$/;
-    const phoneNumberRegex = /^[0-9]{8}$/;
-    const emailRegex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[a-zA-Z]+$/;
-    const locationRegex = /^[a-zA-Z]+[0-9]*$/;
-
-    const firstName = document.getElementById("firstName") as HTMLInputElement;
-    if (!firstName.value || !NameRegex.test(firstName.value)) {
-      firstName?.style.setProperty("border-color", "red");
-      firstName.placeholder = "firstName must contain only letters and spaces!";
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  
+    const email = document.getElementById('email') as HTMLInputElement;
+    const username = document.getElementById('firstName') as HTMLInputElement;
+    const pwd = document.getElementById('pwd') as HTMLInputElement;
+    const pwdConfirm = document.getElementById('confpwd') as HTMLInputElement;
+  
+    if (!username.value) {
+      username.style.setProperty('border-color', 'red');
+      username.placeholder = 'Username must not be empty!';
       ok = false;
     } else {
-      firstName?.style.setProperty("border-color", "#000");
+      username.style.setProperty('border-color', '#000');
     }
-
-    const lastName = document.getElementById("lastName") as HTMLInputElement;
-    if (!lastName.value || !NameRegex.test(lastName.value)) {
-      lastName?.style.setProperty("border-color", "red");
-      lastName.placeholder = "lastName must contain only letters and spaces!";
-      ok = false;
-    } else {
-      lastName?.style.setProperty("border-color", "#000");
-    }
-
-    const email = document.getElementById("email") as HTMLInputElement;
+  
     if (!email.value || !emailRegex.test(email.value)) {
-      email?.style.setProperty("border-color", "red");
-      email.placeholder = "email is not valid!";
+      email.style.setProperty('border-color', 'red');
+      email.placeholder = 'Invalid email format!';
       ok = false;
     } else {
-      email?.style.setProperty("border-color", "#000");
+      email.style.setProperty('border-color', '#000');
     }
-
-    const pwd = document.getElementById("pwd") as HTMLInputElement;
+  
     if (!pwd.value) {
-      pwd?.style.setProperty("border-color", "red");
-      pwd.placeholder = "pwd must not be empty!";
+      pwd.style.setProperty('border-color', 'red');
+      pwd.placeholder = 'Password must not be empty!';
       ok = false;
     } else {
-      pwd?.style.setProperty("border-color", "#000");
+      pwd.style.setProperty('border-color', '#000');
     }
+  
+    if (pwd.value !== pwdConfirm.value) {
+      pwdConfirm.style.setProperty('border-color', 'red');
+      pwdConfirm.placeholder = 'Passwords do not match!';
+      ok = false;
+    } else {
+      pwdConfirm.style.setProperty('border-color', '#000');
+    }
+  
+    return ok;
+  }
+  
 
-    const confpwd = document.getElementById("confpwd") as HTMLInputElement;
-    if ((!confpwd.value) || (confpwd.value != pwd.value)) {
-      confpwd?.style.setProperty("border-color", "red");
-      confpwd.placeholder = "incorrect!";
-      ok = false;
-    } else {
-      confpwd?.style.setProperty("border-color", "#000");
-    }
+  onSignup() {
+    if (this.verifInput()) {
+      console.log('Sending credentials:', this.credentials);
+      if (!this.credentials.username || !this.credentials.email || !this.credentials.password || !this.credentials.passwordConfirm) {
+        alert('Please fill in all required fields.');
+        return;
+      }
 
-    const phoneNumber = document.getElementById("phoneNumber") as HTMLInputElement;
-    if (!phoneNumber.value || !phoneNumberRegex.test(phoneNumber.value)) {
-      phoneNumber?.style.setProperty("border-color", "red");
-      phoneNumber.placeholder = "phone must be 8-digits!";
-      ok = false;
-    } else {
-      phoneNumber?.style.setProperty("border-color", "#000");
-    }
-
-    const location = document.getElementById("location") as HTMLInputElement;
-    if (!location.value || !locationRegex.test(location.value)) {
-      location?.style.setProperty("border-color", "red");
-      location.placeholder = "invalid location!";
-      ok = false;
-    } else {
-      location?.style.setProperty("border-color", "#000");
-    }
-    
-    
-    if(ok){
-      //Add account to DB;
-      this.router.navigate(["/login"]);
+      this.authService.signup(this.credentials).subscribe({
+        next: (response: any) => {
+          console.log('Signup successful:', response);
+          localStorage.setItem('token', response.token); 
+          this.router.navigate(['/login']); 
+        },
+        error: (err) => {
+          console.error('Signup failed:', err);
+          alert('Signup failed: ' + (err.error.message || 'Unknown error'));
+        }
+      });
     }
   }
+  
 }

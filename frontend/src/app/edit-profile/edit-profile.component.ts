@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -8,6 +9,11 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './edit-profile.component.css'
 })
 export class EditProfileComponent implements OnInit  {
+  image!: String;
+  name!: String;
+  mail!: String;
+  phone!: String;
+  location!: String;
   user = {
     image: '',
     name: '',
@@ -16,7 +22,7 @@ export class EditProfileComponent implements OnInit  {
     location: ''
   };
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private sharedService : SharedService) {}
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
@@ -26,6 +32,10 @@ export class EditProfileComponent implements OnInit  {
       this.user.phone = params.get('phone') || '';
       this.user.location = params.get('location') || '';
     });
+  }
+
+  updateUser(){
+    
   }
 }
 

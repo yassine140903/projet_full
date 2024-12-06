@@ -17,7 +17,7 @@ export class ProductPageComponent {
   currentImageIndex = 0;
 
   article: Article | null = null;
-  mainImage: string | null = null;
+  mainImage: string | undefined = undefined;
   ngOnInit(): void {
     const articleId = this.route.snapshot.paramMap.get('articleId');
       if (articleId) {
@@ -25,6 +25,7 @@ export class ProductPageComponent {
         this.sharedService.getArticle(articleId).subscribe(
           (res: any) => {
             this.article = res.data.post;
+            this.mainImage = this.article?.images[0];
           },
           (error) => {
             console.error('Failed to fetch article:', error);

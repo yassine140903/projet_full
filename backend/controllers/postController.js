@@ -24,8 +24,25 @@ const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
 });
-exports.uploadPostImages = upload.array('images', 3);
-
+exports.uploadPostImages = (req, res, next) => {
+  upload.array('images', 3)(req, res, (err) => {
+    if (
+      err instanceof multer.MulterError &&
+      err.code === 'LIMIT_UNEXPECTED_FILE'
+    ) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Too many files to upload. Maximum limit is 3.',
+      });
+    } else if (err) {
+      return res.status(400).json({
+        status: 'fail',
+        message: err.message,
+      });
+    }
+    next();
+  });
+};
 exports.resizePostImages = (req, res, next) => {
   if (!req.files) return next();
 
@@ -43,6 +60,9 @@ exports.resizePostImages = (req, res, next) => {
 
 exports.getAllPosts = async (req, res) => {
   try {
+    // Get total number of posts
+    const totalPosts = await Post.countDocuments();
+
     // EXECUTE QUERY
     const features = new APIFeatures(Post.find(), req.query)
       .filter()
@@ -51,13 +71,17 @@ exports.getAllPosts = async (req, res) => {
       .paginate();
     const posts = await features.query.populate({
       path: 'createdBy',
-      select: 'username image', // Select the fields you want to include
+      select: 'username image phoneNumber', // Select the fields you want to include
     });
+    // Calculate total pages
+    const limit = req.query.limit * 1 || 12;
+    const totalPages = Math.ceil(totalPosts / limit);
 
     // SEND RESPONSE
     res.status(200).json({
       status: 'success',
       results: posts.length,
+      totalPages,
       data: {
         posts,
       },
@@ -73,7 +97,10 @@ exports.getAllPosts = async (req, res) => {
 
 exports.getPost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id).populate({
+      path: 'createdBy',
+      select: 'username image phoneNumber', // Select the fields you want to include
+    });;
     // Post.findOne({ _id: req.params.id })
 
     res.status(200).json({
@@ -111,6 +138,7 @@ exports.createPost = async (req, res) => {
 
     // Add the new post to the user's posts array
     user.posts.push(newPost._id);
+    await user.save({ validateModifiedOnly: true }); // Save the user document with validateModifiedOnly
 
     res.status(201).json({
       status: 'success',

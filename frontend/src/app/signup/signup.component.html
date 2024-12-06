@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
     <div class="form-container">
         <div class="form-content">
             <div class="form-left">
-                <form id="register" class="form" action="#" method="post">
+                <form  (ngSubmit)="onSignup()" id="register" class="form" action="#" method="post">
                     <h2>Sign Up!</h2>
                     <p>Enter your details to continue:</p>
-                    <input type="text" id="firstName" name="username" placeholder="firstname" required>
-                    <input type="text" id="lastName" name="username" placeholder="lastname" required>
-                    <input type="email" id="email" name="email" placeholder="Email" required>
-                    <input type="password" id="pwd" name="password" placeholder="Password" required>
-                    <input type="password" id="confpwd" name="confirmpassword" placeholder="Confirm Password" required>
-                    <input type="text" id="location" name="username" placeholder="location" required>
-                    <input type="tel" id="phoneNumber" name="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"  placeholder="Phone number" required>
+                    <input type="text" [(ngModel)]="credentials.username" id="firstName" name="username" placeholder="username" required>
+                    <input type="email" [(ngModel)]="credentials.email" id="email" name="email" placeholder="Email" required>
+                    <input type="password" [(ngModel)]="credentials.password" id="pwd" name="password" placeholder="Password" required>
+                    <input type="password" [(ngModel)]="credentials.passwordConfirm" id="confpwd" name="confirmpassword" placeholder="Confirm Password" required>
+                    <input type="text" [(ngModel)]="credentials.location" id="location" name="location" placeholder="location" required>
+                    <input type="tel" [(ngModel)]="credentials.phoneNumber" id="phoneNumber" name="tel" pattern="[0-9]"  placeholder="Phone number" required>
                     <button type="submit" class="submit-btn" (click)="verifInput()">Sign Up</button>
                 </form>
                 

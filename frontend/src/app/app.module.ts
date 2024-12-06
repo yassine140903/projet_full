@@ -11,7 +11,6 @@ import { ArticleComponent } from './article/article.component';
 import { ArticleListComponent } from './article-list/article-list.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { FooterComponent } from './footer/footer.component';
-import { PostArticleComponent } from './post-article/post-article.component';
 import { ProfileComponent } from './profile/profile.component';
 import { FormsModule } from '@angular/forms';
 import { AboutComponent } from './about/about.component';
@@ -20,12 +19,16 @@ import { AddArticleComponent } from './add-article/add-article.component';
 import { SignupComponent } from './signup/signup.component';
 import { MyhomeComponent } from './myhome/myhome.component';
 import {
+  HTTP_INTERCEPTORS,
   HttpClientModule,
   provideHttpClient,
   withFetch,
 } from '@angular/common/http';
 import { ProductPageComponent } from './product/product.component';
 import { FilterComponent } from './filter/filter.component';
+import { AuthInterceptor } from './auth.interceptor'; // Import the interceptor
+import { HerosectionComponent } from './herosection/herosection.component';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,6 @@ import { FilterComponent } from './filter/filter.component';
     ArticleListComponent,
     NavBarComponent,
     FooterComponent,
-    PostArticleComponent,
     ProfileComponent,
 
     AboutComponent,
@@ -45,9 +47,18 @@ import { FilterComponent } from './filter/filter.component';
     SignupComponent,
     MyhomeComponent,
     FilterComponent,
+    HerosectionComponent,
+    AdminComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
-  providers: [provideClientHydration(), provideHttpClient(withFetch())],
+  providers: [provideClientHydration(),
+     provideHttpClient(withFetch()),
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,  // Register the AuthInterceptor globally
+        multi: true,  // Allow multiple interceptors to be used
+      },
+    ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

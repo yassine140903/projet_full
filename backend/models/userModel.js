@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     phoneNumber: {
       type: String,
       required: [true, 'Please provide a phone number'],
-      unique: true,
+      unique: [true, 'phoneNumber must be unique'],
       validate: {
         validator: function (v) {
           return /^\d{8}$/.test(v); // Validates 8-digit phone numbers
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
         message: 'Please enter a valid 8-digit phone number',
       },
     },
-    image: { type: String, default: './../public/img/users/default.jpg' },
+    image: { type: String, default: 'default.jpg' },
     password: {
       type: String,
       required: [true, 'Please provide a password'],
@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
         message: 'Passwords are not the same',
       },
     },
-    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+    posts: [{ type: mongoose.Schema.ObjectId, ref: 'Post' }],
     profilePicture: { type: String },
     bio: { type: String },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
@@ -60,13 +60,6 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
     location: {
-      // geoJSON
-      type: {
-        type: String,
-        default: 'Point',
-        enum: ['Point'],
-      },
-      coordinates: [Number], // Array of numbers: [longitude, latitude]
       address: String,
     },
   }

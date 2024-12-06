@@ -3,17 +3,17 @@
     <img [src]="'http://localhost:3000/public/img/posts/' + article.images[0]" alt="*" />
   </div>
   <div class="below">
-    <p style="color: red; font-size: 30px; font-weight: 900">
+    <p style="color: rgb(250, 58, 58); font-size: 30px; font-weight: 900">
       {{ article.price + ' DT' }}
     </p>
     <p class="articleName">{{ article.title }}</p>
     <div class="info">
-      <img [src]="article.createdBy.image" alt="*" />
+      <img [src]="'http://localhost:3000/public/img/users/' + article.createdBy?.image" alt="*" />
       <p
         [routerLink]="['profile', article.createdBy]"
         style="color: rgb(92, 89, 89)"
       >
-        {{ article.createdBy.username }}
+        {{ article.createdBy?.username }}
       </p>
     </div>
     <div class="info2">

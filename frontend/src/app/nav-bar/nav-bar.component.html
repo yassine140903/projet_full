@@ -32,7 +32,7 @@
 
     <img
       class="profile"
-      [src]="user.image"
+      [src]="'http://localhost:3000/public/img/users/' + user.image"
       alt="profile pic"
       *ngIf="authService._isLoggedIn"
       (click)="onProfileClick(user)"
@@ -48,7 +48,7 @@
       type="button"
       class="logoutBtn"
       *ngIf="authService._isLoggedIn"
-      (click)="this.authService.isLoggedIn = false"
+      (click)="this.authService._isLoggedIn = false"
     ></button>
   </div>
 </div>

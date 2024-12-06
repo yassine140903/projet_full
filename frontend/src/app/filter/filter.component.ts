@@ -39,6 +39,7 @@ export class FilterComponent {
     { type: 'Bottom Wear', items: ['Jeans', 'Shorts', 'Skirt'] },
     { type: 'Outerwear', items: ['Jacket', 'Coat', 'Hoodie'] },
     { type: 'Footwear', items: ['Sneakers', 'Boots', 'Sandals'] },
+    { type: '-------', items: ['Other'] },
   ];
 
   resetForm(form: NgForm) {
