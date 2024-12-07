@@ -1,37 +1,70 @@
-
-    <div class="form-container">
-        <div class="form-content">
-            <div class="profile-photo-section">
-                <img id="profile-photo" [src]="user.image" alt="Profile Photo">
-                <label for="photo-upload" class="photo-upload-label">Change Profile Photo</label>
-                <input type="file" id="photo-upload" accept="image/*" onchange="loadFile(event)">
-            </div>
-
-            <form>
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="{{user.name}}" required>
-
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="{{user.mail}}" required>
-
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" placeholder="{{user.phone}}" required>
-
-                <label for="location">Location</label>
-                <input type="text" id="location" name="location" placeholder="{{user.location}}">
-
-                <button type="submit">Update Profile</button>
-            </form>
-        </div>
+<div class="form-container">
+  <div class="form-content">
+    <div class="profile-photo-section">
+      <img
+        id="profile-photo"
+        [src]="'http://localhost:3000/public/img/users/' + user.image"
+        alt="Profile Photo"
+      />
+      <label for="photo-upload" class="photo-upload-label"
+        >Change Profile Photo</label
+      >
+      <input
+        type="file"
+        id="photo-upload"
+        accept="image/*"
+        onchange="loadFile(event)"
+      />
     </div>
 
-    <script>
-        // JavaScript to preview the selected profile photo
-        function loadFile(event) {
-            const output = document.getElementById('profile-photo');
-            output.src = URL.createObjectURL(event.target.files[0]);
-            output.onload = function() {
-                URL.revokeObjectURL(output.src); // Free memory
-            };
-        }
-    </script>
+    <form>
+      <label for="name">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        placeholder="{{ user.name }}"
+        required
+      />
+
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="{{ user.mail }}"
+        required
+      />
+
+      <label for="phone">Phone Number</label>
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        placeholder="{{ user.phone }}"
+        required
+      />
+
+      <label for="location">Location</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        placeholder="{{ user.location }}"
+      />
+
+      <button type="submit">Update Profile</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // JavaScript to preview the selected profile photo
+  function loadFile(event) {
+    const output = document.getElementById("profile-photo");
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function () {
+      URL.revokeObjectURL(output.src); // Free memory
+    };
+  }
+</script>

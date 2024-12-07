@@ -12,27 +12,29 @@ const app = express();
 
 // 1) MIDDLEWARES
 // Security HTTP headers
-app.use(helmet());
+// app.use(helmet());
 
 // Enable CORS
-app.use(cors({
-  origin: 'http://localhost:4200'
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:4200',
+  })
+);
 
 // Middleware to allow cross-origin resource sharing for static files
 app.use('/public/img/posts', (req, res, next) => {
   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin'); // Allow cross-origin access
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
   next();
 });
-
+app.use('/public/img/users', (req, res, next) => {
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin'); // Allow cross-origin access
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
+  next();
+});
 // Serve static files from the 'public' directory
 const path = require('path');
-app.use('/public', express.static(path.join(__dirname, 'public'), {
-  setHeaders: (res, path) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');  // Allow all origins for static files
-  }
-}));
-
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Development logging
 if (process.env.NODE_ENV === 'development') {
@@ -54,7 +56,7 @@ app.use(express.json());
 app.use(mongoSanitize());
 
 // Data sanitization against XSS attacks (cross-site scripting) for HTML injections
-app.use(xss());
+// app.use(xss());
 
 // Prevent parameter pollution
 app.use(
