@@ -30,20 +30,15 @@
       (click)="goToLogin()"
     ></button>
 
-    <img
-      class="profile"
-      [src]="'http://localhost:3000/public/img/users/' + user.image"
-      alt="*"
-      *ngIf="authService._isLoggedIn"
-      (click)="onProfileClick(user)"
-    />
-    <span
-      class="username"
-      *ngIf="authService._isLoggedIn"
-      (click)="onProfileClick(user)"
-    >
-      {{ user.username }}
-    </span>
+      <img
+        class="profile"
+        [src]="'http://localhost:3000/public/img/users/' + user.image"
+        alt="*"
+        *ngIf="authService._isLoggedIn"
+        (click)="onProfileClick(user)"
+        
+      />
+
     <button
       type="button"
       class="logoutBtn"

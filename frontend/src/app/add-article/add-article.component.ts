@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-add-article',
@@ -32,7 +33,7 @@ export class AddArticleComponent {
     'Monastir', 'Mahdia', 'Zaghouan', 'Siliana'
   ];
 
-  constructor(private router: Router, private sharedService: SharedService) {}
+  constructor(private router: Router, private sharedService: SharedService, private authService : AuthService) {}
 
   onFileSelect(event: any): void {
     const selectedFiles: FileList = event.target.files;
@@ -208,6 +209,11 @@ validateAndSubmit(): void {
     const fileInput = document.getElementById('photos') as HTMLInputElement;
     if (fileInput) {
       fileInput.value = ''; // Reset the file input when component initializes
+    }
+
+    if(!this.authService.isLoggedIn){
+        alert('a login is required');
+        this.router.navigate([""]);
     }
   }
 }

@@ -28,7 +28,6 @@ import { ProductPageComponent } from './product/product.component';
 import { FilterComponent } from './filter/filter.component';
 import { AuthInterceptor } from './auth.interceptor'; // Import the interceptor
 import { HerosectionComponent } from './herosection/herosection.component';
-import { AdminComponent } from './admin/admin.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ChangePwdComponent } from './change-pwd/change-pwd.component';
 
@@ -50,7 +49,6 @@ import { ChangePwdComponent } from './change-pwd/change-pwd.component';
     MyhomeComponent,
     FilterComponent,
     HerosectionComponent,
-    AdminComponent,
     EditProfileComponent,
     ChangePwdComponent,
   ],

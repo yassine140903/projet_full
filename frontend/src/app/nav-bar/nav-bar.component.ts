@@ -26,13 +26,17 @@ export class NavBarComponent {
   };
 
   ngOnInit() {
-    const userData = localStorage.getItem('userData');
+    // window.addEventListener('navBarRefresh', () => this.getUserData());
     try {
-      this.user = userData ? (JSON.parse(userData) as User) : this.user;
+      this.getUserData();
     } catch (error) {
       console.error('Failed to parse userData from localStorage:', error);
     }
-    window.addEventListener('navBarRefresh', () => this.ngOnInit());
+  }
+  
+  getUserData(){
+    const userData = localStorage.getItem('userData');
+    this.user = userData ? (JSON.parse(userData) as User) : this.user;
   }
 
   onProfileClick(user: User) {

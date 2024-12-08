@@ -3,8 +3,8 @@
     <img [src]="'http://localhost:3000/public/img/posts/' + article.images[0]" alt="*" />
   </div>
   <div class="below">
-    <p style="color: rgb(250, 58, 58); font-size: 30px; font-weight: 900">
-      {{ article.price + ' DT' }}
+    <p class="price">
+      {{ article.price}} <span style="font-size: 16px; color: rgb(7, 42, 101);">dt</span>
     </p>
     <p class="articleName">{{ article.title }}</p>
     <div class="info">

@@ -106,20 +106,20 @@ export class EditProfileComponent implements OnInit {
       if (this.photo) {
         formData.append('image', this.photo, this.photo.name);
       }
-      console.log(formData);
+  
       this.sharedService.updateme(formData).subscribe({
-        next: (response) => {
-          console.log(response);
-          localStorage.setItem('userData', JSON.stringify(response));
+        next: (response: any) => {
+          localStorage.setItem('userData', JSON.stringify(response.data.user));
           window.dispatchEvent(new Event('navBarRefresh'));
           console.log('Update successful.');
-          // this.router.navigate(['/profile']);
+          this.router.navigate(['/']);
         },
         error: (err) => {
           alert(err?.error?.message);
           this.errmsg = err?.error?.message || 'An error occurred.';
         },
       });
+      
     }
   }
 

@@ -12,6 +12,28 @@
     justify-content: space-between;
     border: 1px solid black;
     border-radius: 5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.container:hover{
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.5);
+    transform: translate(3px, -3px);
+    background-color: #faf9fa;
+}
+
+.container:hover .articleName{
+    background-color: rgba(128, 255, 0);
+}
+
+.container:hover .below{
+    background-color: antiquewhite;
+}
+
+.price{
+    color: rgb(250, 58, 58);
+    font-size: 26px;
+    font-weight: 900;
 }
 
 .container .img-container{
@@ -54,15 +76,12 @@
 
 .articleName{
     font-weight: 900;
-    font-size: 18px;
+    font-size: 20px;
     border-radius: 5px;
     padding: 0.2vw 0.5vw;
     text-align: center;
-}
-
-.container:hover{
-    cursor: pointer;
-    background-color: #ffffffe9;
+    background-color: rgba(128, 255, 0, 0.264);
+    transition: none;
 }
 
 @media all and (max-width: 1550px){

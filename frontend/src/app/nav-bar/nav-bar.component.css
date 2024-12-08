@@ -120,8 +120,9 @@ ul li{
     color: #000;
     position: fixed;
     top: 6%;
-    right: 9.9%;
+    right: 10%;
     font-size: 14px;
+    transform: translate(10%);
 }
 
 .profile img{
