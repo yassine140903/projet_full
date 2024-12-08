@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { SharedService } from './shared.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private sharedService: SharedService) {}
+  constructor(private sharedService: SharedService ,private router:Router) {}
 
   private saveToken(token: string): void {
     localStorage.setItem('token', token);
@@ -56,5 +57,6 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
     this._isLoggedIn = false;
+    this.router.navigate(['']);
   }
 }
