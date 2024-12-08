@@ -47,9 +47,12 @@ export class EditProfileComponent implements OnInit {
   }
 
   verifInput() {
-    const username = (document.getElementById('username') as HTMLInputElement)
-      .value.trim();
-    const email = (document.getElementById('email') as HTMLInputElement).value.trim();
+    const username = (
+      document.getElementById('username') as HTMLInputElement
+    ).value.trim();
+    const email = (
+      document.getElementById('email') as HTMLInputElement
+    ).value.trim();
     const phoneNumber = (
       document.getElementById('phoneNumber') as HTMLInputElement
     ).value.trim();
@@ -63,29 +66,25 @@ export class EditProfileComponent implements OnInit {
 
     let isValid = true;
 
-    if (!usernameRegex.test(username)) {
-      this.showValidationError('username', 'Only letters and spaces allowed!');
-      isValid = false;
-    } else {
-      this.clearValidationError('username');
-    }
-
-    if (!emailRegex.test(email)) {
+    if (email && !emailRegex.test(email)) {
       this.showValidationError('email', 'Invalid email format!');
       isValid = false;
     } else {
       this.clearValidationError('email');
     }
 
-    if (!phoneNumberRegex.test(phoneNumber)) {
-      this.showValidationError('phoneNumber', 'Phone must be 8 digits!');
+    if (phoneNumber && !phoneNumberRegex.test(phoneNumber)) {
+      this.showValidationError('phoneNumber', 'Invalid phone number format!');
       isValid = false;
     } else {
       this.clearValidationError('phoneNumber');
     }
 
-    if (location.length < 3) {
-      this.showValidationError('location', 'Location must be at least 3 characters!');
+    if (location && location.length < 3) {
+      this.showValidationError(
+        'location',
+        'Location must be at least 3 characters!'
+      );
       isValid = false;
     } else {
       this.clearValidationError('location');
@@ -97,15 +96,12 @@ export class EditProfileComponent implements OnInit {
       formData.append('email', email);
       formData.append('phoneNumber', phoneNumber);
       formData.append('location', location);
-
-      // if (this.photo) {
-      //   formData.append('image', this.photo, this.photo.name);
-      // }
-
+      console.log('form data', formData);
       this.sharedService.updateme(formData).subscribe({
-        next: () => {
-          //this.router.navigate(['/profile']);
-          console.log("nomallement sar l update.");
+        next: (response) => {
+          console.log(response);
+          console.log('Update successful.');
+          // this.router.navigate(['/profile']);
         },
         error: (err) => {
           alert(err?.error?.message);
