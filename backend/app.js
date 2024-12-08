@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const postRouter = require('./routes/postRoutes');
 const userRouter = require('./routes/userRoutes');
+const homeRouter = require('./routes/homeRoutes');
+
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
@@ -86,5 +88,6 @@ app.use((req, res, next) => {
 // 3) ROUTES
 app.use('/api/v1/posts', postRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/home', homeRouter);
 
 module.exports = app;

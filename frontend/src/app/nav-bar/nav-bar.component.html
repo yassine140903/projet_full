@@ -48,7 +48,7 @@
       type="button"
       class="logoutBtn"
       *ngIf="authService._isLoggedIn"
-      (click)="this.authService._isLoggedIn = false"
+      (click)="this.authService.logout()"
     ></button>
   </div>
 </div>

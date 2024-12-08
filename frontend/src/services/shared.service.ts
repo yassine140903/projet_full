@@ -8,12 +8,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class SharedService {
-  constructor( private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   getFilteredArticles(filterParams: any) {
     const baseUrl = 'http://localhost:3000/api/v1/posts';
     let queryParams = '';
-  
+
     // Dynamically construct query string based on available filter parameters
     if (filterParams.search) {
       queryParams += `search=${encodeURIComponent(filterParams.search)}&`;
@@ -36,48 +36,50 @@ export class SharedService {
     if (filterParams.gender) {
       queryParams += `gender=${encodeURIComponent(filterParams.gender)}&`;
     }
-    
+
     queryParams += `page=1&limit=12`;
-    
+
     const finalUrl = `${baseUrl}?${queryParams}`;
     console.log(finalUrl);
     return this.http.get(finalUrl);
-  }  
-  
+  }
 
   getAllArticles() {
     return this.http.get('http://localhost:3000/api/v1/posts');
   }
 
-  getSlice(num_de_page : number, limit: number) {
-    return this.http.get(`http://localhost:3000/api/v1/posts?page=${num_de_page}&&limit=${limit}`);
+  getSlice(num_de_page: number, limit: number) {
+    return this.http.get(
+      `http://localhost:3000/api/v1/posts?page=${num_de_page}&&limit=${limit}`
+    );
   }
 
   getBySearch(keyword: string) {
-    return this.http.get(`http://localhost:3000/api/v1/posts?search=${keyword}`);
+    return this.http.get(
+      `http://localhost:3000/api/v1/posts?search=${keyword}`
+    );
   }
 
   getArticle(id: string) {
     return this.http.get(`http://localhost:3000/api/v1/posts/${id}`);
-  }  
+  }
 
   getToken(): string | null {
     return localStorage.getItem('token');
   }
   // data is the article data to be posted
   postArticle(data: any): Observable<any> {
-    const token = this.getToken();
-    
-    // Set up headers (Content-Type is not needed for FormData)
-    let headers = new HttpHeaders();
-    if (token) {
-      headers = headers.set('Authorization', `Bearer ${token}`);
-    }
-  
+    // const token = this.getToken();
+
+    // // Set up headers (Content-Type is not needed for FormData)
+    // let headers = new HttpHeaders();
+    // if (token) {
+    //   headers = headers.set('Authorization', `Bearer ${token}`);
+    // }
+
     // Send FormData to the backend
-    return this.http.post('http://localhost:3000/api/v1/posts', data, { headers });
+    return this.http.post('http://localhost:3000/api/v1/posts', data);
   }
-  
 
   updateArticle(id: string, data: any) {
     return this.http.put(`http://localhost:3000/api/v1/posts/${id}`, data);
@@ -102,15 +104,26 @@ export class SharedService {
   signoutuser() {
     return this.http.get('http://localhost:3000/api/v1/users/signout');
   }
-  updateme(data: any) {
-    return this.http.patch('http://localhost:3000/api/v1/users/updateme', data);
+  updateme(data: FormData) {
+    return this.http.patch('http://localhost:3000/api/v1/users/updateMe', data);
+  }
+  updatemyPassword(data: any) {
+    return this.http.patch(
+      'http://localhost:3000/api/v1/users/updateMyPassword',
+      data
+    );
   }
   deleteme() {
     return this.http.delete('http://localhost:3000/api/v1/users/deleteme');
   }
 
-  forgotPassword(email: string): Observable<any> {
-    return this.http.post(`http://localhost:3000/api/v1/forgotPassword`, { email });
+  forgotPassword(data: any): Observable<any> {
+    return this.http.post(
+      `http://localhost:3000/api/v1/users/forgotPassword`,
+      data
+    );
   }
-
+  sendContact(data: any): Observable<any> {
+    return this.http.post(`http://localhost:3000/api/v1/home/contact`, data);
+  }
 }

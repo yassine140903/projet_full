@@ -1,3 +1,5 @@
+<app-nav-bar></app-nav-bar>
+
 <div class="form-container">
   <div class="form-content">
     <div class="profile-photo-section">
@@ -11,18 +13,18 @@
       >
       <input
         type="file"
-        id="photo-upload"
+        id="photo"
         accept="image/*"
-        onchange="loadFile(event)"
+        (change)="onFileSelect($event)"
       />
     </div>
 
     <form>
-      <label for="name">Name</label>
+      <label for="name">Username</label>
       <input
         type="text"
-        id="name"
-        name="name"
+        id="username"
+        name="username"
         placeholder="{{ user.name }}"
         required
       />
@@ -39,7 +41,7 @@
       <label for="phone">Phone Number</label>
       <input
         type="tel"
-        id="phone"
+        id="phoneNumber"
         name="phone"
         placeholder="{{ user.phone }}"
         required
@@ -53,18 +55,7 @@
         placeholder="{{ user.location }}"
       />
 
-      <button type="submit">Update Profile</button>
+      <button type="button" (click)="verifInput()">Update Profile</button>
     </form>
   </div>
 </div>
-
-<script>
-  // JavaScript to preview the selected profile photo
-  function loadFile(event) {
-    const output = document.getElementById("profile-photo");
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.onload = function () {
-      URL.revokeObjectURL(output.src); // Free memory
-    };
-  }
-</script>

@@ -3,6 +3,7 @@ import { User } from '../user.interface';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../../services/shared.service';
+import { Article } from '../article.interface';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +24,10 @@ export class ProfileComponent {
           console.log(this.user.image);
         });
       }
+  }
+
+  onArticleClick(article: Article) {
+    this.router.navigate(['/product', article._id]);
   }
 
   logMeOut(){

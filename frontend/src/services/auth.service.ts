@@ -6,19 +6,16 @@ import { jwtDecode } from 'jwt-decode';
 import { SharedService } from './shared.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  public _isLoggedIn: boolean = true;
 
-  constructor(private sharedService : SharedService) {}
+  constructor(private sharedService: SharedService) {}
 
   private saveToken(token: string): void {
-    const decodedToken: any = jwtDecode(token); 
-    const expires = new Date(decodedToken.exp * 1000); 
-    document.cookie = `jwt=${token}; expires=${expires.toUTCString()}; path=/`;
+    localStorage.setItem('token', token);
   }
-  
+
   signup(userData: any): Observable<any> {
     return this.sharedService.signupuser(userData).pipe(
       tap((response: any) => {
@@ -41,21 +38,23 @@ export class AuthService {
 
   getToken(): string | null {
     if (typeof localStorage !== 'undefined')
-      return localStorage.getItem('jwt');
+      return localStorage.getItem('token');
     return '';
   }
 
   get isLoggedIn(): boolean {
     const token = this.getToken();
+    console.log('Token: from loggedIn Getter HAHA', token);
     if (!token) {
       return false;
     }
     const decodedToken: any = jwtDecode(token);
     return decodedToken.exp * 1000 > Date.now();
   }
+  public _isLoggedIn: boolean = this.isLoggedIn;
 
   logout(): void {
-    localStorage.removeItem('jwt');
+    localStorage.removeItem('token');
+    this._isLoggedIn = false;
   }
-  
 }

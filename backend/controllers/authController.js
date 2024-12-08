@@ -149,7 +149,12 @@ exports.protect = async (req, res, next) => {
       });
     }
     // check if user changed password after the token was issued
-    console.log(currentUser.changePasswordAfter(decoded.iat), decoded.iat);
+
+    console.log(
+      'password ',
+      currentUser.changePasswordAfter(decoded.iat),
+      decoded.iat
+    );
     if (currentUser.changePasswordAfter(decoded.iat)) {
       return res.status(401).json({
         status: 'fail',
@@ -273,6 +278,7 @@ exports.updatePassword = async (req, res) => {
       });
     }
     // 2) Check if POSTed current password is correct
+    console.log(user.password);
     if (
       !(await user.correctPassword(req.body.passwordCurrent, user.password))
     ) {
@@ -293,9 +299,11 @@ exports.updatePassword = async (req, res) => {
 
     createsendToken(user, 200, res);
   } catch (err) {
-    res.status(404).json({
+    console.error('Error updating password:', err);
+    res.status(500).json({
       status: 'fail',
-      message: err,
+      message:
+        'There was an error updating the password. Please try again later.',
     });
   }
 };

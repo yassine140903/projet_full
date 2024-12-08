@@ -1,0 +1,37 @@
+<app-nav-bar></app-nav-bar>
+
+<div class="form-container">
+    <div class="form-content">
+  
+      <div class="form">
+        <label for="name">Current Password</label>
+        <input
+          [(ngModel)] = "user.currpwd"
+          type="text"
+          id="currpwd"
+          name="name"
+          required
+        />
+  
+        <label for="npwd">New Password</label>
+        <input
+        [(ngModel)] = "user.newpwd"
+          type="text"
+          id="newpwd"
+          name="npwd"
+          required
+        />
+  
+        <label for="cpwd">Confirm Password</label>
+        <input
+        [(ngModel)] = "user.confpwd"
+          type="text"
+          id="confpwd"
+          name="cpwd"
+          required
+        />
+  
+        <button type="button" (click)="changePwd()">Change Password</button>
+      </div>
+    </div>
+  </div>
