@@ -9,6 +9,14 @@ const { handleMongoError } = require('../utils/errorHandler'); // Import the uti
 const multer = require('multer');
 const sharp = require('sharp');
 
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
+
 // Multer storage and filter configuration
 const multerStorage = multer.memoryStorage();
 
@@ -35,7 +43,7 @@ exports.resizeUserImage = (req, res, next) => {
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`../frontend/src/assets/images/users/${req.file.filename}`);
+    .toFile(`public/img/users/${req.file.filename}`);
 
   next();
 };
@@ -316,4 +324,51 @@ exports.logout = async (req, res) => {
   res.status(200).json({
     status: 'success',
   });
+};
+exports.updateMe = async (req, res) => {
+  try {
+    // 1) Create error if user POSTs password data
+    if (req.body.password || req.body.passwordConfirm) {
+      return res.status(400).json({
+        status: 'fail',
+        message:
+          'This route is not for password updates. Please use /updateMyPassword.',
+      });
+    }
+
+    // 2) Filter out unwanted fields names that are not allowed to be updated
+    const filteredBody = filterObj(
+      req.body,
+      'username',
+      'email',
+      'phoneNumber',
+      'location'
+    );
+    if (req.file) filteredBody.image = req.file.filename;
+
+    console.log('filteredBody', filteredBody);
+    // 3) Update user document
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      filteredBody,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    // SEND RESPONSE
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: updatedUser,
+      },
+    });
+    console.log('User updated successfully');
+  } catch (err) {
+    const message = handleMongoError(err);
+    res.status(404).json({
+      status: 'fail',
+      message,
+    });
+  }
 };

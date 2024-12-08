@@ -60,7 +60,6 @@ export class EditProfileComponent implements OnInit {
       document.getElementById('location') as HTMLInputElement
     ).value.trim();
 
-    const usernameRegex = /^[a-zA-Z ]+$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneNumberRegex = /^[0-9]{8}$/;
 
@@ -92,14 +91,27 @@ export class EditProfileComponent implements OnInit {
 
     if (isValid) {
       const formData = new FormData();
-      formData.append('username', username);
-      formData.append('email', email);
-      formData.append('phoneNumber', phoneNumber);
-      formData.append('location', location);
-      console.log('form data', formData);
+      if (username) {
+        formData.append('username', username);
+      }
+      if (email) {
+        formData.append('email', email);
+      }
+      if (phoneNumber) {
+        formData.append('phoneNumber', phoneNumber);
+      }
+      if (location) {
+        formData.append('location', location);
+      }
+      if (this.photo) {
+        formData.append('image', this.photo, this.photo.name);
+      }
+      console.log(formData);
       this.sharedService.updateme(formData).subscribe({
         next: (response) => {
           console.log(response);
+          localStorage.setItem('userData', JSON.stringify(response));
+          window.dispatchEvent(new Event('navBarRefresh'));
           console.log('Update successful.');
           // this.router.navigate(['/profile']);
         },

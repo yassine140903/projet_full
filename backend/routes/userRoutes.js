@@ -19,7 +19,13 @@ router.patch(
   authController.protect,
   authController.updatePassword
 );
-router.patch('/updateMe', authController.protect, userController.updateMe);
+router.patch(
+  '/updateMe',
+  authController.protect,
+  authController.uploadUserImage,
+  authController.resizeUserImage,
+  authController.updateMe
+);
 router.delete('/deleteMe', authController.protect, userController.deleteMe);
 
 router

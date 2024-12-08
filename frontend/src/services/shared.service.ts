@@ -104,7 +104,7 @@ export class SharedService {
   signoutuser() {
     return this.http.get('http://localhost:3000/api/v1/users/signout');
   }
-  updateme(data: FormData) {
+  updateme(data: any) {
     return this.http.patch('http://localhost:3000/api/v1/users/updateMe', data);
   }
   updatemyPassword(data: any) {

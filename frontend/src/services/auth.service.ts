@@ -9,7 +9,6 @@ import { SharedService } from './shared.service';
   providedIn: 'root',
 })
 export class AuthService {
-
   constructor(private sharedService: SharedService) {}
 
   private saveToken(token: string): void {
@@ -55,6 +54,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('userData');
     this._isLoggedIn = false;
   }
 }
